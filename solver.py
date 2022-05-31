@@ -9,9 +9,9 @@ class Graph():
 		self.adj_matrix = [[0 for i in range(n)] for j in range(n)]
 
 	def printSolution(self, dist):
-		print("Vertex \tDistance from Source")
+		print("Destinasi \tJarak \tpath")
 		for node in range(self.num_of_nodes):
-			print(chr (node + ord("a")), "\t", dist[node][1], dist[node][2])
+			print(chr (node + ord("a")), "\t\t", dist[node][1],"\t" ,dist[node][2])
 
 	def next(self, visited):
 		temp = -10
@@ -100,4 +100,4 @@ if __name__=="__main__":
 			[0, 0, 2, 0, 0, 0, 6, 7, 0]
 			];
 
-    test.solve("b");
+    test.solve("c");
