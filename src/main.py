@@ -25,11 +25,14 @@ def open_file(root):
         for i in range (len (adj_matrix[0])):
             arr.append(chr(ord("A") + i))
         
-        G = Graph(len(adj_matrix[0]))
-        G.adj_matrix = adj_matrix
+        graf = Graph(len(adj_matrix[0]))
+        graf.adj_matrix = adj_matrix
 
-        drawGraph(adj_matrix, arr)
-        optionPicker(root, arr, G)
+        if (graf.isSymmetric()):
+            drawGraphSimilar(adj_matrix, arr)
+        else:
+            drawGraph(adj_matrix, arr)
+        optionPicker(root, arr, graf)
     
 def drawGraph(adj_matrix, arr):
     G =  nx.DiGraph()
@@ -41,7 +44,7 @@ def drawGraph(adj_matrix, arr):
     pos = nx.spring_layout(G, seed=5)
     _, ax = plt.subplots()
 
-    nx.draw_networkx_nodes(G,pos, node_size=250, ax=ax)
+    nx.draw_networkx_nodes(G,pos, node_size=200, ax=ax)
     nx.draw_networkx_labels(G, pos, ax=ax)
     
     curved_edges = [edge for edge in G.edges() if reversed(edge) in G.edges()]
@@ -56,6 +59,25 @@ def drawGraph(adj_matrix, arr):
     my_nx.my_draw_networkx_edge_labels(G, pos, ax=ax, edge_labels=curved_edge_labels,rotate=False,rad = arc_rad)
     nx.draw_networkx_edge_labels(G, pos, ax=ax, edge_labels=straight_edge_labels,rotate=False)
     
+    plt.savefig("img1.png", dpi=100)
+    plt.close()
+    showImg("img1.png")
+
+def drawGraphSimilar(adj_matrix, arr):
+    G =  nx.Graph()
+    for i in range (len(adj_matrix[0])):
+        for j in range(i+1,len(adj_matrix[0])):
+            if (adj_matrix[i][j] > 0):
+                G.add_edge(arr[i], arr[j], weight = adj_matrix[i][j])
+    
+    pos = nx.spring_layout(G)
+
+    nx.draw_networkx_nodes(G,pos, node_size=200)
+    nx.draw_networkx_edges(G,pos, edgelist=G.edges())
+    nx.draw_networkx_labels(G, pos)
+    edge_labels = nx.get_edge_attributes(G, "weight")
+
+    nx.draw_networkx_edge_labels(G, pos, edge_labels)
     plt.savefig("img1.png", dpi=100)
     plt.close()
     showImg("img1.png")
@@ -111,7 +133,13 @@ def show(valSrc, valDst, G):
 
     solution_label.config(text = solution)
     
-    iteration_label.config(text = "Banyak Iterasi " + str(iteration.index(valDst.get()) + 1))
+    
+
+    iteration = iteration[:iteration.index(valDst.get()) + 1]
+    iteration = ">".join(iteration)
+    
+    iteration_label.config(text = "Banyak Iterasi " + str(len(iteration)))
+    iteration2_label.config(text = iteration)
     time_label.config(text = str(res) + "ms")
 
     
@@ -148,5 +176,8 @@ time_label.grid(column= 1, row = 3)
 
 iteration_label = tk.Label(root, font=("Raleway", 15))
 iteration_label.grid(column= 3, row = 3)
+
+iteration2_label = tk.Label(root, font=("Raleway", 15))
+iteration2_label.grid(column= 3, row = 4)
 
 root.mainloop()

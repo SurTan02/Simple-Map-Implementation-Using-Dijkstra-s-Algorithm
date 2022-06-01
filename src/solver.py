@@ -5,10 +5,6 @@ class Graph():
 		self.num_of_nodes = n
 		self.adj_matrix = [[0 for i in range(n)] for j in range(n)]
 
-	# def printSolution(self, dist):
-	# 	print("Destinasi \tJarak \tpath")
-	# 	for node in range(self.num_of_nodes):
-	# 		print(chr (node + ord("A")), "\t\t", dist[node][1],"\t" ,dist[node][2])
 
 	def next(self, visited):
 		temp = -10
@@ -28,6 +24,22 @@ class Graph():
 				temp.append(i)
 		return temp
 
+	def transpose(self, tr):
+		for i in range(self.num_of_nodes):
+			for j in range(self.num_of_nodes):
+				tr[i][j] = self.adj_matrix[j][i]
+  
+
+	def isSymmetric(self):
+		
+		tr = [[0 for j in range(self.num_of_nodes)] for i in range(self.num_of_nodes) ]
+		self.transpose(tr)
+		for i in range(self.num_of_nodes):
+			for j in range(self.num_of_nodes):
+				if (self.adj_matrix[i][j] != tr[i][j]):
+					return False
+		return True
+
 	def Dijkstra(self, src = "A", dst = "A"):
 		solution = []
 		
@@ -41,12 +53,12 @@ class Graph():
 			if (i == (src_name - ord("A"))):
 				curr_distance = 0
 			visited.append([0, curr_distance,[chr(src_name)]])
-		
+
 		
 		for i in range(self.num_of_nodes):
 			if ( i == 0) : next = ord(src) - ord("A")			
 			else : next = self.next(visited)
-			
+			# print(visited)
 			step.append(chr(next + ord("A")))
 
 			solution = self.connection(next)
@@ -85,6 +97,8 @@ if __name__=="__main__":
 			[8, 11, 0, 0, 0, 0, 1, 0, 7],
 			[0, 0, 2, 0, 0, 0, 6, 7, 0]
 			]
-			
+
+	if (test.isSymmetric()):
+		print("tes")			
 	x = test.Dijkstra("C", "B")
 	print(x)
