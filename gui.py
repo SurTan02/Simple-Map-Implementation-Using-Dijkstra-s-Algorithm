@@ -7,6 +7,7 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter.filedialog import askopenfile
 from PIL import Image, ImageTk
+# import os
 
 
 def open_file(root, pict_label):
@@ -26,7 +27,7 @@ def open_file(root, pict_label):
 
     drawGraph(adj_matrix, arr)
     
-    hideBG(pict_label)
+    
     
     srcList(root, arr, G)
     
@@ -48,18 +49,17 @@ def drawGraph(adj_matrix, arr):
     nx.draw_networkx_edge_labels(G, pos, edge_labels)
     # plt.show()
     # plt.draw()
-    plt.savefig("file2.png", dpi=100)
+    plt.savefig("img1.png", dpi=100)
+    plt.close()
+    showImg("img1.png")
 
+def showImg(img):
+    pict = ImageTk.PhotoImage(Image.open(img))
+    
+    # pict_label = tk.Label(image = pict)
+    pict_label.config(image = pict)
+    pict_label.image = pict
 
-def hideBG(pict_label):
-    
-    pict = Image.open('file2.png')
-    pict = ImageTk.PhotoImage(pict)
-    
-    pict_label2 = tk.Label(image = pict)
-    
-    pict_label2.image = pict
-    pict_label2.grid(column=2, row=0)
 
 def srcList(root, option, G):
     valSrc = tk.StringVar()
@@ -93,16 +93,16 @@ def srcList(root, option, G):
                             width=10).grid(column=2, row=3)
 
 def show(root, valSrc, valDst, G):
-    myLabel = tk.Label(root, 
-                        text= "Lintasan dari "+ valSrc.get() + " Menuju " + valDst.get(), font=("Raleway", 15))
-    myLabel.grid(column= 2, row = 4)
+    info_label.config(text="")
+    info_label.config(text= "Lintasan dari "+ valSrc.get() + " Menuju " + valDst.get(), font=("Raleway", 15))
 
-    
     _, cost, path = G.Dijkstra(valSrc.get(), valDst.get())
     solution = "".join(path) + " dengan cost " + str(cost)
     # myLabel = tk.Label(root, text=valSrc.get() + "->" + valDst.get(), font=("Raleway", 15))
-    myLabel = tk.Label(root, text = solution, font=("Raleway", 15))
-    myLabel.grid(column= 2, row = 5)
+
+    # solution_label.config(text = "")
+    solution_label.config(text = solution)
+    # solution_label.grid(column= 2, row = 5)
 
     
 
@@ -111,9 +111,11 @@ root = tk.Tk()
 canvas = tk.Canvas(root, width=800, height=600)
 canvas.grid( columnspan=5, rowspan= 5)
 
+
+
+    # pict_label = tk.Label(image = pict)
 pict_label = tk.Label()
 pict_label.grid(column=2, row=0)
-# pict_label = tk.Label(image = "")
 # pict_label.grid(column=1, row=0)
 
 #instruction
@@ -126,6 +128,11 @@ browse_btn = tk.Button(root, textvariable=browse_text, command = lambda:open_fil
 browse_text.set("Browse")
 browse_btn.grid(column=2, row=2)
 
+# label solution
+info_label = tk.Label(root, font=("Raleway", 15))
+info_label.grid(column= 2, row = 4)
 
+solution_label = tk.Label(root, font=("Raleway", 15))
+solution_label.grid(column= 2, row = 5)
 
 root.mainloop()
