@@ -1,62 +1,40 @@
-
-import matplotlib.figure as fg
 import networkx as nx
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+from solver import *
 import tkinter as tk
-# tkinter._test()
+from tkinter import *
+from tkinter.ttk import *
 
-edges = [[0, 4, 0, 0, 0, 0, 0, 8, 0],
-        [4, 0, 8, 0, 0, 0, 0, 11, 0],
-        [0, 8, 0, 7, 0, 4, 0, 0, 2],
-        [0, 0, 7, 0, 9, 14, 0, 0, 0],
-        [0, 0, 0, 9, 0, 10, 0, 0, 0],
-        [0, 0, 4, 14, 10, 0, 2, 0, 0],
-        [0, 0, 0, 0, 0, 2, 0, 1, 6],
-        [8, 11, 0, 0, 0, 0, 1, 0, 7],
-        [0, 0, 2, 0, 0, 0, 6, 7, 0]
-        ]
+from PIL import Image, ImageTk
+from util import *
 
-# edges = [[0, 4, 2, 0, 0, 0],
-#          [4, 0, 1, 5, 0, 0],
-#          [2, 1, 0, 8, 10, 0],
-#          [0, 5, 8, 0, 2, 6],
-#          [0, 0, 10, 2, 0, 3],
-#          [0, 0, 0, 6, 3, 0]]
-G =  nx.Graph()
-# G.add_edge([('A','B'), ("A","C"), ("B","C")])
-arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-for i in range (len(edges[0])):
-    for j in range(i+1,len(edges[0])):
-        if (edges[i][j] > 0):
-            G.add_edge(arr[i], arr[j], weight = edges[i][j])
-# G.add_edge('A','C', weight=7)
-# G.add_edge('C','B', weight=3)
-# G.add_edge('C','D', weight=2)
-# G.add_edge('D','E', weight=1)
-# G.add_edge('D','F', weight=5)
+root = tk.Tk()
 
-pos = nx.spring_layout(G)
+# canvas = tk.Canvas(root, width=768, height=640)
+# canvas.grid(columnspan=3, rowspan=3)
 
-nx.draw_networkx_nodes(G,pos, node_size=300)
-nx.draw_networkx_edges(G,pos, edgelist=G.edges(), edge_color="red")
-nx.draw_networkx_labels(G, pos)
-edge_labels = nx.get_edge_attributes(G, "weight")
-
-nx.draw_networkx_edge_labels(G, pos, edge_labels)
-plt.show()
-# plt.savefig("file1.png")
-
-window = tk.Tk()
-f = plt.Figure(figsize=(5, 5), dpi=100)
+canvas = tk.Canvas(root, width=800, height=600)
+canvas.grid( columnspan=5, rowspan= 5)
 
 # create matplotlib canvas using figure `f` and assign to widget `window`
-canvas =  FigureCanvasTkAgg(f, window)
-canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH)
+# gambar
 
-# canvas.draw()
-# get canvas as tkinter's widget and `gird` in widget `window`
-# canvas.get_tk_widget().grid(row=..., column=...)
-# canvas.show()
+pict_label = tk.Label()
+pict_label.grid(column=2, row=0)
+# pict_label = tk.Label(image = "")
+# pict_label.grid(column=1, row=0)
 
-window.mainloop()
+#instruction
+instruction = tk.Label(root, text="Select a txt file on your computer", font = "Raleway")
+instruction.grid(column=2, row=1)
+
+#Button
+browse_text = tk.StringVar()
+browse_btn = tk.Button(root, textvariable=browse_text, command = lambda:open_file(root, pict_label, canvas), font ="Raleway", bg="#20bebe", fg="white", height=3, width=15)
+browse_text.set("Browse")
+browse_btn.grid(column=2, row=2)
+
+
+
+root.mainloop()
