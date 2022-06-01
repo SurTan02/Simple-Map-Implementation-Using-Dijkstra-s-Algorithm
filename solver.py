@@ -4,14 +4,14 @@ import sys
 class Graph():
 
 	def __init__(self, n):
-        # membuat adjacency matriks yang merepsentasikan graph yang terdiri dari n node 
+		# membuat adjacency matriks yang merepsentasikan graph yang terdiri dari n node 
 		self.num_of_nodes = n
 		self.adj_matrix = [[0 for i in range(n)] for j in range(n)]
 
 	def printSolution(self, dist):
 		print("Destinasi \tJarak \tpath")
 		for node in range(self.num_of_nodes):
-			print(chr (node + ord("a")), "\t\t", dist[node][1],"\t" ,dist[node][2])
+			print(chr (node + ord("A")), "\t\t", dist[node][1],"\t" ,dist[node][2])
 
 	def next(self, visited):
 		temp = -10
@@ -22,7 +22,7 @@ class Graph():
 			if (visited[i][0] == 0) and (visited[i][1] < min_dist):
 				temp = i
 				min_dist = visited[i][1]
-        
+		
 		return temp
 	
 	def connection(self, index):
@@ -33,29 +33,29 @@ class Graph():
 				temp.append(i)
 		return temp
 
-	def solve(self, src = "a"):
+	def Dijkstra(self, src = "A", dst = "A"):
 		solution = []
 		
 		src_name = ord(src)
-        # node, distance, from
+		# node, distance, from
 		visited = []
 		
 		# shortest_path = {"a" : ""}
 		
 		for i in range (self.num_of_nodes ):
 			curr_distance = sys.maxsize
-			if (i == (src_name - ord("a"))):
+			if (i == (src_name - ord("A"))):
 				curr_distance = 0
 			visited.append([0, curr_distance,[chr(src_name)]])
 		
 		
 		for i in range(self.num_of_nodes):
-			if ( i == 0) : next = ord(src) - ord("a")			
+			if ( i == 0) : next = ord(src) - ord("A")			
 			else :next = self.next(visited)
-			# print(i, chr(ord("a") + next))
+			
 			solution = self.connection(next)
-			print(chr(src_name + next - 1), visited[next][1])
-			print(solution)
+			# print(chr(src_name + next - 1), visited[next][1])
+			# print(solution)
 			for node_tetangga in  (solution):
 			
 				if visited[node_tetangga][0] == 0:
@@ -67,29 +67,18 @@ class Graph():
 						visited[node_tetangga][1] = new_distance
 						visited[node_tetangga][2] = list(visited[next][2])
 						# visited[node_tetangga][2].append(chr(ord("a") + next))
-						visited[node_tetangga][2].append(chr(ord("a") + node_tetangga))
+						visited[node_tetangga][2].append(chr(ord("A") + node_tetangga))
 						# visited[node_tetangga][2].append(chr(src_name + node_tetangga))
-        
+		
 			visited[next][0] = 1
-			# print(i, chr(ord("a") + next ), visited[next][1])
-			# step.append([chr(ord("a") + i), chr(ord("a") + next), visited[next][1]])
-			# if (chr(ord("a") + i) not in shortest_path):
-			# 	shortest_path[chr(ord("a") + i) ] = chr(ord("a") + next)
-			# else:
-				# temp = shortest_path[chr(ord("a") + i)]
-				# shortest_path.update({ chr(ord("a") + i) :  temp + chr(ord("a") + next)})
-			# temp = shortest_path[chr(ord("a"))]
-			# if (self.adj_matrix[0][next] > 0):
-				# shortest_path
-			# shortest_path.update({ chr(ord("a")) :  temp+ "-" + chr(ord("a") + next)})
 
-		self.printSolution(visited)
-		# print(shortest_path)
+		# self.printSolution(visited)
+		return(visited[ord(dst) - ord("A")])
 		
 		
 if __name__=="__main__":
-    test = Graph(9)
-    test.adj_matrix = [[0, 4, 0, 0, 0, 0, 0, 8, 0],
+	test = Graph(9)
+	test.adj_matrix = [[0, 4, 0, 0, 0, 0, 0, 8, 0],
 			[4, 0, 8, 0, 0, 0, 0, 11, 0],
 			[0, 8, 0, 7, 0, 4, 0, 0, 2],
 			[0, 0, 7, 0, 9, 14, 0, 0, 0],
@@ -98,6 +87,7 @@ if __name__=="__main__":
 			[0, 0, 0, 0, 0, 2, 0, 1, 6],
 			[8, 11, 0, 0, 0, 0, 1, 0, 7],
 			[0, 0, 2, 0, 0, 0, 6, 7, 0]
-			];
-
-    test.solve("c");
+			]
+			
+	x = test.Dijkstra("C", "D")
+	print(x)
