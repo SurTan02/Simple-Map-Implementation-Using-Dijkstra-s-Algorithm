@@ -64,9 +64,9 @@ def drawGraph(adj_matrix, arr):
     showImg("img1.png")
 
 def drawGraphSimilar(adj_matrix, arr):
-    G =  nx.Graph()
+    G =  nx.DiGraph()
     for i in range (len(adj_matrix[0])):
-        for j in range(i+1,len(adj_matrix[0])):
+        for j in range(len(adj_matrix[0])):
             if (adj_matrix[i][j] > 0):
                 G.add_edge(arr[i], arr[j], weight = adj_matrix[i][j])
     
@@ -136,9 +136,9 @@ def show(valSrc, valDst, G):
     
 
     iteration = iteration[:iteration.index(valDst.get()) + 1]
+    iteration_label.config(text = "Banyak Iterasi " + str(len(iteration)))
     iteration = ">".join(iteration)
     
-    iteration_label.config(text = "Banyak Iterasi " + str(len(iteration)))
     iteration2_label.config(text = iteration)
     time_label.config(text = str(res) + "ms")
 
